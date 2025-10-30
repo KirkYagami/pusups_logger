@@ -7,4 +7,3 @@ class User(db.Model):
     name = db.Column(db.String(100), nullable=False)
 
 
-    
