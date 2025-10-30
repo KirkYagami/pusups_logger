@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/extended-beauty.css') }}">
+{% endblock %}
+
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Hello! Welcome to Pushups Logger</h1>
+    <br>
+    <div class="image-container">
+        <img src="{{ url_for('static', filename='images/feet-elevated-pushup.png') }}" alt="Push up guy" height="300">
+    </div>
+    <br>
+    <h3>Pushups Logger</h3>
+    <p>This website implements basic CRUD functionality and user authentication features using Flask.</p>
+</div>
+{% endblock %}
