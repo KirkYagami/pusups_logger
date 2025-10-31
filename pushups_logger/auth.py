@@ -3,7 +3,8 @@ This will be used to implement auth
 '''
 
 from flask import Blueprint, render_template, request, redirect, url_for
-from werkzeug.security import generate_password_hash
+from werkzeug.security import generate_password_hash, check_password_hash
+from flask_login import login_user, logout_user, login_required
 from .models import User
 from . import db
 
@@ -50,19 +51,29 @@ def login():
 
 @auth_blueprint.route('/login', methods=['POST'])
 def login_post():
-    # Get form data
     email = request.form.get('email')
     password = request.form.get('password')
     remember = True if request.form.get('remember') else False
     
-    # Print to console (for testing)
-    print(f"Email: {email}, Password: {password}, Remember: {remember}")
+    # Check if user exists
+    user = User.query.filter_by(email=email).first()
     
-    # Redirect to profile page
+    # Check if user exists and password is correct
+    if not user or not check_password_hash(user.password, password):
+        print("Invalid email or password")
+        return redirect(url_for('auth.login'))
+    
+    # Login user
+    login_user(user, remember=remember)
+    print(f"User {user.name} logged in successfully!")
+    
     return redirect(url_for('main.profile'))
 
-
 @auth_blueprint.route('/logout')
+@login_required
 def logout():
-    return render_template('index.html')
+    logout_user()
+    return redirect(url_for('main.index'))
+
+
 
